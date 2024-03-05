@@ -1,0 +1,10 @@
+github.com/haashemi/go-harfbuzz v0.0.0-20240304202021-7d8c8e99547f h1:3RpC5xQxtwaqG8D417EIiC23/RxOrk7g2efIz4DXZww=
+github.com/haashemi/go-harfbuzz v0.0.0-20240304202021-7d8c8e99547f/go.mod h1:x/7sZksqZHTio7OmfVgHo2K1GelkqAWcg4FAIBp4iqA=
+github.com/haashemi/painter v0.1.1-0.20240129225408-5dd5dda5e35f h1:vsO26KfSLuAJpmCk1nZn34OUiRYnFEHtBT3ixb56OOs=
+github.com/haashemi/painter v0.1.1-0.20240129225408-5dd5dda5e35f/go.mod h1:3zLXbFZPgUCzcbAV6DOca758/JlYp/yx+/ZLmstxrZU=
+github.com/mattn/go-pointer v0.0.1 h1:n+XhsuGeVO6MEAp7xyEukFINEa+Quek5psIR/ylA6o0=
+github.com/mattn/go-pointer v0.0.1/go.mod h1:2zXcozF6qYGgmsG+SeTZz3oAbFLdD3OWqnUbNvJZAlc=
+golang.org/x/image v0.15.0 h1:kOELfmgrmJlw4Cdb7g/QGuB3CvDrXbqEIww/pNtNBm8=
+golang.org/x/image v0.15.0/go.mod h1:HUYqC05R2ZcZ3ejNQsIHQDQiwWM4JBqmm6MKANTp4LE=
+golang.org/x/text v0.14.0 h1:ScX5w1eTa3QqT8oi6+ziP7dTV1S2+ALU0bI+0zXKWiQ=
+golang.org/x/text v0.14.0/go.mod h1:18ZOQIKpY8NJVqYksKHtTdi31H5itFRjB5/qKTNYzSU=
