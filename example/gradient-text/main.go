@@ -40,7 +40,7 @@ func main() {
 
 	// Create an image gradient for our text
 	textImage := painter.New(bounds.Dx(), bounds.Dy())
-	painter.DrawLinearGradient(textImage, img.Rect, 0, color.NRGBA{207, 139, 243, 255}, color.NRGBA{253, 185, 155, 255})
+	painter.DrawLinearGradient(textImage, textImage.Rect, 0, color.NRGBA{207, 139, 243, 255}, color.NRGBA{253, 185, 155, 255})
 
 	// Write it on your image
 	w.Write(img, bounds.Add(image.Pt(x, y)), textImage)
