@@ -38,7 +38,7 @@ func writeTitle(face *writer.Face, img draw.Image) {
 	textImage := painter.New(bounds.Dx(), bounds.Dy())
 	painter.DrawLinearGradient(textImage, textImage.Rect, 200, color.NRGBA{207, 139, 243, 255}, color.NRGBA{253, 185, 155, 255})
 
-	w.Write(img, bounds.Add(image.Pt((img.Bounds().Dx()-bounds.Dx())/2, 180)), textImage)
+	w.Write(img, image.Pt((img.Bounds().Dx()-bounds.Dx())/2, 230), textImage)
 }
 
 func writeDescription(face *writer.Face, img draw.Image) {
@@ -53,7 +53,7 @@ func writeDescription(face *writer.Face, img draw.Image) {
 
 	bounds := w.Bounds()
 
-	w.Write(img, bounds.Add(image.Pt((img.Bounds().Dx()-bounds.Dx())/2, 430)), image.NewUniform(color.NRGBA{220, 160, 200, 255}))
+	w.Write(img, image.Pt((img.Bounds().Dx()-bounds.Dx())/2, 430), image.NewUniform(color.NRGBA{220, 160, 200, 255}))
 }
 
 func writeRepoURL(face *writer.Face, img draw.Image) {
@@ -68,5 +68,5 @@ func writeRepoURL(face *writer.Face, img draw.Image) {
 
 	bounds := w.Bounds()
 
-	w.Write(img, bounds.Add(image.Pt(10, img.Bounds().Dy()-bounds.Dy()-5)), image.White)
+	w.Write(img, image.Pt(10, img.Bounds().Dy()-bounds.Dy()-5), image.White)
 }

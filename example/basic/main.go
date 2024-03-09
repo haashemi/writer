@@ -25,7 +25,7 @@ func main() {
 	img := image.NewNRGBA(w.Bounds())
 
 	// Write it on your image
-	w.Write(img, w.Bounds(), image.White)
+	w.Write(img, image.Point{}, image.White)
 
 	// Save the image. (doesn't matter how.)
 	f, _ := os.Create("basic/result.png")

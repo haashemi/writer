@@ -40,7 +40,7 @@ func main() {
 	y := (img.Rect.Dy() - bounds.Dy()) / 2
 
 	// Write it on your image
-	w.Write(img, bounds.Add(image.Pt(x, y)), image.White)
+	w.Write(img, image.Pt(x, y), image.White)
 
 	// Save the image. (doesn't matter how.)
 	f, err := os.Create("bidi-text/result.png")

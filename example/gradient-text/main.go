@@ -43,7 +43,7 @@ func main() {
 	painter.DrawLinearGradient(textImage, textImage.Rect, 0, color.NRGBA{207, 139, 243, 255}, color.NRGBA{253, 185, 155, 255})
 
 	// Write it on your image
-	w.Write(img, bounds.Add(image.Pt(x, y)), textImage)
+	w.Write(img, image.Pt(x, y), textImage)
 
 	// Save the image. (doesn't matter how.)
 	painter.SavePNG(img, "gradient-text/result.png")
