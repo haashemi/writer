@@ -13,6 +13,10 @@ type Writer struct {
 	font *Font
 	opts Options
 	buf  hb.Buffer
+
+	bounds    image.Rectangle
+	glyphs    []hb.GlyphInfo
+	positions []hb.GlyphPosition
 }
 
 func NewWriter(font *Font, text string, opts Options) (w *Writer, err error) {
@@ -33,37 +37,44 @@ func NewWriter(font *Font, text string, opts Options) (w *Writer, err error) {
 	hb.BufferGuessSegmentProperties(w.buf)
 	hb.Shape(w.font.font, w.buf, nil)
 
+	// TODO: Let's support these with Options
+	// []hb.Feature{
+	// 	{Tag: hb.TagFromString("calt"), Value: 1, Start: 0, End: 4294967295},
+	// 	{Tag: hb.TagFromString("liga"), Value: 1, Start: 0, End: 4294967295},
+	// }
+
+	w.glyphs = hb.BufferGetGlyphInfos(w.buf)
+	w.positions = hb.BufferGetGlyphPositions(w.buf)
+
 	return
 }
 
-// TODO: Calculate Arabic vowels
-func (w *Writer) Bounds() (rect image.Rectangle) {
-	var width int32
-	for _, gi := range hb.BufferGetGlyphPositions(w.buf) {
-		width += gi.XAdvance / 64
-	}
-	rect.Max.X = int(width)
-
-	e, ok := w.font.Extents()
-	if ok {
-		rect.Max.Y = int(e.Ascender/64 - e.Descender/64)
+// Advance returns how far the text will go after drawing.
+func (w *Writer) Advance() int32 {
+	if !w.bounds.Empty() {
+		return int32(w.bounds.Dx())
 	}
 
-	return rect
+	var advance int32
+	for _, gp := range hb.BufferGetGlyphPositions(w.buf) {
+		advance += gp.XAdvance
+	}
+
+	return advance / 64
 }
 
-func (w *Writer) Write(img draw.Image, rect image.Rectangle, color image.Image) {
-	gis := hb.BufferGetGlyphInfos(w.buf)
-	gps := hb.BufferGetGlyphPositions(w.buf)
+// Bounds returns the after-drawing text bounds.
+func (w *Writer) Bounds() image.Rectangle {
+	if !w.bounds.Empty() {
+		return w.bounds
+	}
 
 	state := new(drawingState)
-	state.vec = vector.NewRasterizer(rect.Dx(), rect.Dy())
 	state.fontSize = float32(w.font.Size())
 	statePointer := pointer.Save(state)
 
-	for i := range len(gis) {
-		gi := gis[i]
-		gp := gps[i]
+	for i, gi := range w.glyphs {
+		gp := w.positions[i]
 
 		state.offX = float32(gp.XOffset) / 64
 		state.offY = float32(gp.YOffset) / 64
@@ -74,7 +85,32 @@ func (w *Writer) Write(img draw.Image, rect image.Rectangle, color image.Image) 
 		state.posY += float32(gp.YAdvance / 64)
 	}
 
-	state.vec.Draw(img, rect, color, image.Point{})
+	w.bounds = image.Rect(0, int(-state.topY), int(state.posX), int(state.bottomY-state.topY))
+	return w.bounds
+}
+
+// Write draws the text on the “image” at “at” with "color”.
+func (w *Writer) Write(img draw.Image, at image.Point, color image.Image) {
+	bounds := w.Bounds()
+
+	state := new(drawingState)
+	state.vec = vector.NewRasterizer(bounds.Dx(), bounds.Dy())
+	state.fontSize = float32(w.font.Size())
+	statePointer := pointer.Save(state)
+
+	for i, gi := range w.glyphs {
+		gp := w.positions[i]
+
+		state.offX = float32(gp.XOffset) / 64
+		state.offY = float32(gp.YOffset) / 64
+
+		w.font.draw(gi.Codepoint, drawFuncs, statePointer)
+
+		state.posX += float32(gp.XAdvance / 64)
+		state.posY += float32(gp.YAdvance / 64)
+	}
+
+	state.vec.Draw(img, bounds.Add(at), color, image.Point{})
 }
 
 func (w *Writer) Close() error {
