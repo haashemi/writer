@@ -2,10 +2,14 @@ package writer
 
 import "golang.org/x/text/unicode/bidi"
 
+var DefaultOptions = Options{
+	Bidi:     true,
+	Features: DefaultFeatures,
+}
+
 type Options struct {
-	Bidi bool
-	// TODO: Align, Justify, IndentLeftMargin, IndentRightMargin, IndentFirstLine,
-	// BeforeParagraphSpace, AfterParagraphSpace, TypeOptions, EastAsianFeatures?
+	Bidi     bool
+	Features []Feature // Feature are the OpenType feature you want to enable.
 }
 
 func bidiText(in string) (out string, err error) {
