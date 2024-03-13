@@ -2,16 +2,20 @@ package writer
 
 import "golang.org/x/text/unicode/bidi"
 
+// DefaultOptions contains the recommended default options
 var DefaultOptions = Options{
 	Bidi:     true,
 	Features: DefaultFeatures,
 }
 
+// Options holds the features used to modify, shape, and write the text.
 type Options struct {
 	Bidi     bool
 	Features []Feature // Feature are the OpenType feature you want to enable.
+	// TODO: Features maybe should be a struct instead of a slice?
 }
 
+// bidiText converts a bi-directional text logically to visually.
 func bidiText(in string) (out string, err error) {
 	p := bidi.Paragraph{}
 	p.SetString(in)
