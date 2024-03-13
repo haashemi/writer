@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	face := writer.NewFaceFromFile("./font.ttf")
+	face := writer.NewFaceFromFile("./fonts/Vazirmatn-ExtraBold.ttf")
 	defer face.Close()
 
 	img := painter.New(1280, 720)
@@ -27,7 +27,7 @@ func writeTitle(face *writer.Face, img draw.Image) {
 	font := writer.NewFont(face, 200)
 	defer font.Close()
 
-	w, err := writer.NewWriter(font, "WRITER", writer.Options{})
+	w, err := writer.NewWriter(font, "WRITER", writer.DefaultOptions)
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +45,7 @@ func writeDescription(face *writer.Face, img draw.Image) {
 	font := writer.NewFont(face, 35)
 	defer font.Close()
 
-	w, err := writer.NewWriter(font, "Write any text on any image easily!", writer.Options{})
+	w, err := writer.NewWriter(font, "Write any text on any image easily!", writer.DefaultOptions)
 	if err != nil {
 		panic(err)
 	}
@@ -60,7 +60,7 @@ func writeRepoURL(face *writer.Face, img draw.Image) {
 	font := writer.NewFont(face, 25)
 	defer font.Close()
 
-	w, err := writer.NewWriter(font, "github.com/haashemi/writer", writer.Options{})
+	w, err := writer.NewWriter(font, "github.com/haashemi/writer", writer.DefaultOptions)
 	if err != nil {
 		panic(err)
 	}

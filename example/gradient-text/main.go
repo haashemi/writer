@@ -10,7 +10,7 @@ import (
 
 const (
 	Text     = "A placeholder text showing how to write a text with gradient colors"
-	FontPath = "./font.ttf" // update it with a path to your font
+	FontPath = "./fonts/Vazirmatn-ExtraBold.ttf" // update it with a path to your font
 )
 
 func main() {

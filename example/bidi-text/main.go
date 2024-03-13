@@ -11,7 +11,7 @@ import (
 
 const (
 	Text     = "حتی متن bi-directional با عدد (1234) هم درست می نویسه!"
-	FontPath = "./font.ttf" // update it with a path to your font
+	FontPath = "./fonts/Vazirmatn-Medium.ttf" // update it with a path to your font
 )
 
 func main() {

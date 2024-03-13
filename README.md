@@ -34,7 +34,7 @@ import (
 
 func main() {
 	// Load face from the font file
-	face := writer.NewFaceFromFile("./font.ttf")
+	face := writer.NewFaceFromFile("./fonts/Vazirmatn-ExtraBold.ttf")
 	defer face.Close()
 
 	// Create a font from the face
@@ -42,14 +42,14 @@ func main() {
 	defer font.Close()
 
 	// Create a new writer instance.
-	w, _ := writer.NewWriter(font, "Hello World!", writer.Options{})
+	w, _ := writer.NewWriter(font, "Hello World!", writer.DefaultOptions)
 	defer w.Close()
 
 	// Create a new image. (doesn't matter how.)
 	img := image.NewNRGBA(w.Bounds())
 
 	// Write it on your image
-	w.Write(img, w.Bounds(), image.White)
+	w.Write(img, image.Point{}, image.White)
 
 	// Save the image. (doesn't matter how.)
 	f, _ := os.Create("basic/result.png")
