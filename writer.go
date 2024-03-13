@@ -35,13 +35,7 @@ func NewWriter(font *Font, text string, opts Options) (w *Writer, err error) {
 
 	hb.BufferAddUTF8(w.buf, text)
 	hb.BufferGuessSegmentProperties(w.buf)
-	hb.Shape(w.font.font, w.buf, nil)
-
-	// TODO: Let's support these with Options
-	// []hb.Feature{
-	// 	{Tag: hb.TagFromString("calt"), Value: 1, Start: 0, End: 4294967295},
-	// 	{Tag: hb.TagFromString("liga"), Value: 1, Start: 0, End: 4294967295},
-	// }
+	hb.Shape(w.font.font, w.buf, opts.Features)
 
 	w.glyphs = hb.BufferGetGlyphInfos(w.buf)
 	w.positions = hb.BufferGetGlyphPositions(w.buf)
@@ -56,7 +50,7 @@ func (w *Writer) Advance() int32 {
 	}
 
 	var advance int32
-	for _, gp := range hb.BufferGetGlyphPositions(w.buf) {
+	for _, gp := range w.positions {
 		advance += gp.XAdvance
 	}
 
