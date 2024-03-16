@@ -11,6 +11,7 @@ import (
 	"golang.org/x/image/vector"
 )
 
+// drawingState holds the essential information of drawing glyphs.
 type drawingState struct {
 	vec *vector.Rasterizer
 
@@ -21,6 +22,8 @@ type drawingState struct {
 	topY, bottomY float32
 }
 
+// processY sets the highest and the lowest Y values passed to the draw methods
+// to the current drawingState.
 func (ds *drawingState) processY(ys ...float32) {
 	for _, y := range ys {
 		if y > ds.bottomY {
@@ -33,7 +36,8 @@ func (ds *drawingState) processY(ys ...float32) {
 	}
 }
 
-// drawFuncs
+// drawFuncs contains the internal drawing methods used to pass to the harfbuzz
+// hb_font_draw method for drawing the glyphs.
 var drawFuncs = hb.DrawFuncsCreate()
 
 // This methods adds all drawing methods to drawFuncs variable.

@@ -107,6 +107,7 @@ func (w *Writer) Write(img draw.Image, at image.Point, color image.Image) {
 	state.vec.Draw(img, bounds.Add(at), color, image.Point{})
 }
 
+// Close destroys the writer's buffer and frees the memory.
 func (w *Writer) Close() error {
 	hb.BufferDestroy(w.buf)
 	return nil

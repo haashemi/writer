@@ -70,7 +70,7 @@ func JustificationAlternatives() Feature {
 	return Feature{Tag: tag("jalt"), Value: 1, Start: 0, End: 4294967295}
 }
 
-// tag converts str to a Tag
+// tag converts “str” to a Tag
 func tag(str string) hb.Tag {
 	if len(str) < 4 {
 		return hb.Tag{}
