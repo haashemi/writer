@@ -8,33 +8,7 @@ import (
 
 	"github.com/haashemi/go-harfbuzz/hb"
 	"github.com/mattn/go-pointer"
-	"golang.org/x/image/vector"
 )
-
-// drawingState holds the essential information of drawing glyphs.
-type drawingState struct {
-	vec *vector.Rasterizer
-
-	posX, posY float32
-	offX, offY float32
-	fontSize   float32
-
-	topY, bottomY float32
-}
-
-// processY sets the highest and the lowest Y values passed to the draw methods
-// to the current drawingState.
-func (ds *drawingState) processY(ys ...float32) {
-	for _, y := range ys {
-		if y > ds.bottomY {
-			ds.bottomY = y
-		}
-
-		if ds.topY == 0 || y < ds.topY {
-			ds.topY = y
-		}
-	}
-}
 
 // drawFuncs contains the internal drawing methods used to pass to the harfbuzz
 // hb_font_draw method for drawing the glyphs.
@@ -50,68 +24,76 @@ func init() {
 }
 
 //export drawMoveTo
-func drawMoveTo(drawData unsafe.Pointer, toX, toY C.float) {
+func drawMoveTo(drawData unsafe.Pointer, toX, toY float32) {
 	w := pointer.Restore(drawData).(*drawingState)
 
 	var (
-		x = w.posX + w.offX + float32(toX)/64
-		y = w.fontSize + w.posY - w.offY - (float32(toY) / 64)
+		x = w.posX + w.offX + (toX / 64)
+		y = w.posY - w.offY - (toY / 64)
 	)
 
-	w.processY(y)
 	if w.vec != nil {
-		w.vec.MoveTo(x, y)
+		w.vec.MoveTo(x-w.minX, y-w.minY)
+	} else {
+		w.processY(y)
+		w.processX(x)
 	}
 }
 
 //export drawLineTo
-func drawLineTo(drawData unsafe.Pointer, toX, toY C.float) {
+func drawLineTo(drawData unsafe.Pointer, toX, toY float32) {
 	w := pointer.Restore(drawData).(*drawingState)
 
 	var (
-		x = w.posX + w.offX + float32(toX)/64
-		y = w.fontSize + w.posY - w.offY - (float32(toY) / 64)
+		x = w.posX + w.offX + (toX / 64)
+		y = w.posY - w.offY - (toY / 64)
 	)
 
-	w.processY(y)
 	if w.vec != nil {
-		w.vec.LineTo(x, y)
+		w.vec.LineTo(x-w.minX, y-w.minY)
+	} else {
+		w.processY(y)
+		w.processX(x)
 	}
 }
 
 //export drawQuadraticTo
-func drawQuadraticTo(drawData unsafe.Pointer, controlX, controlY, toX, toY C.float) {
+func drawQuadraticTo(drawData unsafe.Pointer, controlX, controlY, toX, toY float32) {
 	w := pointer.Restore(drawData).(*drawingState)
 
 	var (
-		x1 = w.posX + w.offX + float32(controlX)/64
-		y1 = w.fontSize + w.posY - w.offY - (float32(controlY) / 64)
-		x2 = w.posX + w.offX + float32(toX)/64
-		y2 = w.fontSize + w.posY - w.offY - (float32(toY) / 64)
+		x1 = w.posX + w.offX + (controlX / 64)
+		y1 = w.posY - w.offY - (controlY / 64)
+		x2 = w.posX + w.offX + (toX / 64)
+		y2 = w.posY - w.offY - (toY / 64)
 	)
 
-	w.processY(y1, y2)
 	if w.vec != nil {
-		w.vec.QuadTo(x1, y1, x2, y2)
+		w.vec.QuadTo(x1-w.minX, y1-w.minY, x2-w.minX, y2-w.minY)
+	} else {
+		w.processY(y1, y2)
+		w.processX(x1, x2)
 	}
 }
 
 //export drawCubicTo
-func drawCubicTo(drawData unsafe.Pointer, control1X, control1Y, control2X, control2Y, toX, toY C.float) {
+func drawCubicTo(drawData unsafe.Pointer, control1X, control1Y, control2X, control2Y, toX, toY float32) {
 	w := pointer.Restore(drawData).(*drawingState)
 
 	var (
-		x1 = w.posX + w.offX + float32(control1X)/64
-		y1 = w.fontSize + w.posY - w.offY - (float32(control1Y) / 64)
-		x2 = w.posX + w.offX + float32(control2X)/64
-		y2 = w.fontSize + w.posY - w.offY - (float32(control2Y) / 64)
-		x3 = w.posX + w.offX + float32(toX)/64
-		y3 = w.fontSize + w.posY - w.offY - (float32(toY) / 64)
+		x1 = w.posX + w.offX + (control1X / 64)
+		y1 = w.posY - w.offY - (control1Y / 64)
+		x2 = w.posX + w.offX + (control2X / 64)
+		y2 = w.posY - w.offY - (control2Y / 64)
+		x3 = w.posX + w.offX + (toX / 64)
+		y3 = w.posY - w.offY - (toY / 64)
 	)
 
-	w.processY(y1, y2, y3)
 	if w.vec != nil {
-		w.vec.CubeTo(x1, y1, x2, y2, x3, y3)
+		w.vec.CubeTo(x1-w.minX, y1-w.minY, x2-w.minX, y2-w.minY, x3-w.minX, y3-w.minY)
+	} else {
+		w.processY(y1, y2, y3)
+		w.processX(x1, x2, x3)
 	}
 }
 
