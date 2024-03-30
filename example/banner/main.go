@@ -4,69 +4,67 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"math"
 
 	"github.com/haashemi/painter"
 	"github.com/haashemi/writer"
 )
 
+var (
+	DancingScript = writer.NewFaceFromFile("./fonts/DancingScript-Medium.ttf")
+	GeistMono     = writer.NewFaceFromFile("./fonts/GeistMonoNerdFontMono-Regular.otf")
+	Vazirmatn     = writer.NewFaceFromFile("./fonts/Vazirmatn-ExtraBold.ttf")
+)
+
 func main() {
-	face := writer.NewFaceFromFile("./fonts/Vazirmatn-ExtraBold.ttf")
-	defer face.Close()
+	img := painter.New(1280, 550)
+	painter.DrawLinearGradient(img, img.Rect, math.Pi/2, color.NRGBA{}, color.NRGBA{20, 20, 20, 255})
 
-	img := painter.New(1280, 720)
-	painter.DrawRadialGradient(img, img.Rect, color.NRGBA{45, 45, 45, 255}, color.NRGBA{20, 20, 20, 255}, image.Point{img.Rect.Dx() / 2, img.Rect.Dy() / 2})
-
-	writeTitle(face, img)
-	writeDescription(face, img)
-	writeRepoURL(face, img)
+	writeTitle(img)
+	writeDescription(img)
+	writeRepoURL(img)
 
 	painter.SavePNG(img, "banner/result.png")
 }
 
-func writeTitle(face *writer.Face, img draw.Image) {
-	font := writer.NewFont(face, 200)
+func writeTitle(img draw.Image) {
+	font := writer.NewFont(Vazirmatn, 200)
 	defer font.Close()
 
-	w, err := writer.NewWriter(font, "WRITER", writer.DefaultOptions)
+	w, err := writer.NewWriter(font, "WRITER", writer.Options{})
 	if err != nil {
 		panic(err)
 	}
 	defer w.Close()
 
-	bounds := w.Bounds()
-
-	textImage := painter.New(bounds.Dx(), bounds.Dy())
+	textImage := painter.New(w.Bounds().Dx(), w.Bounds().Dy())
 	painter.DrawLinearGradient(textImage, textImage.Rect, 200, color.NRGBA{207, 139, 243, 255}, color.NRGBA{253, 185, 155, 255})
 
-	w.Write(img, image.Pt((img.Bounds().Dx()-bounds.Dx())/2, 230), textImage)
+	w.Write(img, image.Pt((img.Bounds().Dx()-w.Bounds().Dx())/2, 150), textImage)
 }
 
-func writeDescription(face *writer.Face, img draw.Image) {
-	font := writer.NewFont(face, 35)
+func writeDescription(img draw.Image) {
+	font := writer.NewFont(DancingScript, 50)
 	defer font.Close()
 
-	w, err := writer.NewWriter(font, "Write any text on any image easily!", writer.DefaultOptions)
+	w, err := writer.NewWriter(font, "Write any text on any image easily!", writer.Options{})
 	if err != nil {
 		panic(err)
 	}
 	defer w.Close()
 
-	bounds := w.Bounds()
-
-	w.Write(img, image.Pt((img.Bounds().Dx()-bounds.Dx())/2, 430), image.NewUniform(color.NRGBA{220, 160, 200, 255}))
+	w.Write(img, image.Pt((img.Bounds().Dx()-w.Bounds().Dx())/2, 350), image.NewUniform(color.NRGBA{220, 160, 200, 255}))
 }
 
-func writeRepoURL(face *writer.Face, img draw.Image) {
-	font := writer.NewFont(face, 25)
+func writeRepoURL(img draw.Image) {
+	font := writer.NewFont(GeistMono, 25)
 	defer font.Close()
 
-	w, err := writer.NewWriter(font, "github.com/haashemi/writer", writer.DefaultOptions)
+	w, err := writer.NewWriter(font, "github.com/haashemi/writer", writer.Options{})
 	if err != nil {
 		panic(err)
 	}
 	defer w.Close()
 
-	bounds := w.Bounds()
-
-	w.Write(img, image.Pt(10, img.Bounds().Dy()-bounds.Dy()-5), image.White)
+	w.Write(img, image.Pt((img.Bounds().Dx()-w.Bounds().Dx())/2, img.Bounds().Dy()-w.Bounds().Dy()-5), image.White)
 }
