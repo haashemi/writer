@@ -1,5 +1,8 @@
 # ![banner](./example/banner/result.png)
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/haashemi/writer.svg)](https://pkg.go.dev/github.com/haashemi/writer)
+[![Go Report Card](https://goreportcard.com/badge/github.com/haashemi/writer)](https://goreportcard.com/report/github.com/haashemi/writer)
+
 Writer is a simple and easy-to-use package to write any text on images. It uses [harfbuzz](https://github.com/harfbuzz/harfbuzz) for shaping and also works totally fine on bi-directional texts.
 
 > [!NOTE]
