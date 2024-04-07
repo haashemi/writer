@@ -1,6 +1,6 @@
 module github.com/haashemi/writer
 
-go 1.22.0
+go 1.20.0
 
 require (
 	github.com/haashemi/go-harfbuzz v0.0.0-20240304202021-7d8c8e99547f

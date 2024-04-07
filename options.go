@@ -27,7 +27,7 @@ func bidiText(in string) (out string, err error) {
 
 	mainDirection := p.Direction()
 
-	for i := range o.NumRuns() {
+	for i := 0; i < o.NumRuns(); i++ {
 		r := o.Run(i)
 
 		switch r.Direction() {
