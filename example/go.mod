@@ -1,6 +1,6 @@
 module github.com/haashemi/writer/example
 
-go 1.22.0
+go 1.21
 
 replace github.com/haashemi/writer v1.0.0 => ../
 
