@@ -18,7 +18,10 @@ type Options struct {
 // bidiText converts a bi-directional text logically to visually.
 func bidiText(in string) (out string, err error) {
 	p := bidi.Paragraph{}
-	p.SetString(in)
+	_, err = p.SetString(in)
+	if err != nil {
+		return
+	}
 
 	o, err := p.Order()
 	if err != nil {
