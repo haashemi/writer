@@ -106,7 +106,13 @@ func (w *Writer) Write(img draw.Image, at image.Point, color image.Image) {
 		state.posY += float32(gp.YAdvance / 64)
 	}
 
-	state.vec.Draw(img, state.vec.Bounds().Add(at), color, image.Point{})
+	// TODO: Find a more optimized way for drawing the texts.
+	// Create a new image and write the vector on it.
+	textImg := image.NewNRGBA(bounds)
+	state.vec.Draw(textImg, bounds, color, image.Point{})
+
+	// Draw the temporary textImage on the img.
+	draw.Draw(img, bounds.Add(at), textImg, image.Point{}, draw.Over)
 }
 
 // Close destroys the writer's buffer and frees the memory.
