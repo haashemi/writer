@@ -6,8 +6,8 @@ require (
 	github.com/haashemi/go-harfbuzz v0.0.0-20240304202021-7d8c8e99547f
 	github.com/mattn/go-pointer v0.0.1
 	github.com/stretchr/testify v1.9.0
-	golang.org/x/image v0.20.0
-	golang.org/x/text v0.18.0
+	golang.org/x/image v0.21.0
+	golang.org/x/text v0.19.0
 )
 
 require (
