@@ -5,6 +5,7 @@ import (
 	"image/draw"
 	"math"
 
+	"github.com/haashemi/writer/internal/drawer"
 	"github.com/haashemi/writer/internal/hb"
 	"github.com/mattn/go-pointer"
 	"golang.org/x/image/vector"
@@ -61,24 +62,24 @@ func (w *Writer) Bounds() image.Rectangle {
 		return w.textBounds
 	}
 
-	state := new(drawingState)
+	state := new(drawer.DrawingState)
 	statePointer := pointer.Save(state)
 	defer pointer.Unref(statePointer)
 
 	for i, gi := range w.glyphs {
 		gp := w.positions[i]
 
-		state.offX = float32(gp.XOffset) / 64
-		state.offY = float32(gp.YOffset) / 64
+		state.OffX = float32(gp.XOffset) / 64
+		state.OffY = float32(gp.YOffset) / 64
 
-		w.font.draw(gi.Codepoint, drawFuncs, statePointer)
+		w.font.draw(gi.Codepoint, drawer.DrawFuncs, statePointer)
 
-		state.posX += float32(gp.XAdvance) / 64
-		state.posY += float32(gp.YAdvance) / 64
+		state.PosX += float32(gp.XAdvance) / 64
+		state.PosY += float32(gp.YAdvance) / 64
 	}
 
-	w.minY, w.minX = state.minY, state.minX
-	w.textBounds = image.Rect(0, 0, int(math.Ceil(float64(state.maxX-state.minX))), int(math.Ceil(float64(state.maxY-state.minY))))
+	w.minY, w.minX = state.MinY, state.MinX
+	w.textBounds = image.Rect(0, 0, int(math.Ceil(float64(state.MaxX-state.MinX))), int(math.Ceil(float64(state.MaxY-state.MinY))))
 	return w.textBounds
 }
 
@@ -86,9 +87,9 @@ func (w *Writer) Bounds() image.Rectangle {
 func (w *Writer) Write(img draw.Image, at image.Point, color image.Image) {
 	bounds := w.Bounds()
 
-	state := &drawingState{
-		vec:  vector.NewRasterizer(bounds.Dx(), bounds.Dy()),
-		minX: w.minX, minY: w.minY,
+	state := &drawer.DrawingState{
+		Vec:  vector.NewRasterizer(bounds.Dx(), bounds.Dy()),
+		MinX: w.minX, MinY: w.minY,
 	}
 
 	statePointer := pointer.Save(state)
@@ -97,16 +98,16 @@ func (w *Writer) Write(img draw.Image, at image.Point, color image.Image) {
 	for i, gi := range w.glyphs {
 		gp := w.positions[i]
 
-		state.offX = float32(gp.XOffset) / 64
-		state.offY = float32(gp.YOffset) / 64
+		state.OffX = float32(gp.XOffset) / 64
+		state.OffY = float32(gp.YOffset) / 64
 
-		w.font.draw(gi.Codepoint, drawFuncs, statePointer)
+		w.font.draw(gi.Codepoint, drawer.DrawFuncs, statePointer)
 
-		state.posX += float32(gp.XAdvance / 64)
-		state.posY += float32(gp.YAdvance / 64)
+		state.PosX += float32(gp.XAdvance / 64)
+		state.PosY += float32(gp.YAdvance / 64)
 	}
 
-	state.vec.Draw(img, state.vec.Bounds().Add(at), color, image.Point{})
+	state.Vec.Draw(img, state.Vec.Bounds().Add(at), color, image.Point{})
 }
 
 // Close destroys the writer's buffer and frees the memory.
