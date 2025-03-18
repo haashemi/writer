@@ -5,7 +5,7 @@ import (
 	"image/draw"
 	"math"
 
-	"github.com/haashemi/go-harfbuzz/hb"
+	"github.com/haashemi/writer/internal/hb"
 	"github.com/mattn/go-pointer"
 	"golang.org/x/image/vector"
 )

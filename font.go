@@ -4,7 +4,7 @@ import (
 	"io"
 	"unsafe"
 
-	"github.com/haashemi/go-harfbuzz/hb"
+	"github.com/haashemi/writer/internal/hb"
 )
 
 // FontExtents is just an alias to harfbuzz's FontExtents type.

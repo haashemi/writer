@@ -6,7 +6,7 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/haashemi/go-harfbuzz/hb"
+	"github.com/haashemi/writer/internal/hb"
 	"github.com/mattn/go-pointer"
 )
 

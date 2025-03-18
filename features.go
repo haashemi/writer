@@ -1,7 +1,7 @@
 package writer
 
 import (
-	"github.com/haashemi/go-harfbuzz/hb"
+	"github.com/haashemi/writer/internal/hb"
 )
 
 // Feature is just an alias to harfbuzz's Feature type.

@@ -3,7 +3,7 @@ package writer
 import (
 	"io"
 
-	"github.com/haashemi/go-harfbuzz/hb"
+	"github.com/haashemi/writer/internal/hb"
 )
 
 // Just to make sure if [Face] implements [io.Closer].
