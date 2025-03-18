@@ -1,6 +1,8 @@
 module github.com/haashemi/writer/example
 
-go 1.21
+go 1.23.0
+
+toolchain go1.24.1
 
 replace github.com/haashemi/writer v1.0.0 => ../
 
@@ -10,8 +12,7 @@ require (
 )
 
 require (
-	github.com/haashemi/go-harfbuzz v0.0.0-20240304202021-7d8c8e99547f // indirect
 	github.com/mattn/go-pointer v0.0.1 // indirect
-	golang.org/x/image v0.18.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/image v0.25.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 )
