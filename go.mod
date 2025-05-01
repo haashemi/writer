@@ -7,8 +7,8 @@ toolchain go1.24.1
 require (
 	github.com/mattn/go-pointer v0.0.1
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/image v0.25.0
-	golang.org/x/text v0.23.0
+	golang.org/x/image v0.26.0
+	golang.org/x/text v0.24.0
 )
 
 require (
